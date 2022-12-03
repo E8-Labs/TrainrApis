@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        \DB::table('exercise_difficulties')->insert([
+        \DB::table('muscle_types')->insert([
             ['id'=> MuscleType::BackMuscle, 'name' => 'Back'],
             ['id'=> MuscleType::FrontMuscle, 'name' => 'Front'],
             

@@ -21,12 +21,12 @@ return new class extends Migration
         });
 
         \DB::table('exercise_types')->insert([
-            ['id'=> 10,     , 'icon_image' => "Images/exercise_types/asset1.png",      'name' => 'Gym'],
-            ['id'=> 15,     , 'icon_image' => "Images/exercise_types/asset2.png",      'name' => 'Bodyweight with equipments'],
-            ['id'=> 20,     , 'icon_image' => "Images/exercise_types/asset3.png",      'name' => 'Cardio'],
-            ['id'=> 25,     , 'icon_image' => "Images/exercise_types/asset4.png",      'name' => 'Body Weight'],
-            ['id'=> 30,     , 'icon_image' => "Images/exercise_types/asset5.png",      'name' => 'Stretching & Mobility'],
-            ['id'=> 35,     , 'icon_image' => "Images/exercise_types/asset6.png",      'name' => 'Resistance Band'],
+            ['id'=> 10,     'icon_image' => "Images/exercise_types/asset1.png",      'name' => 'Gym'],
+            ['id'=> 15,     'icon_image' => "Images/exercise_types/asset2.png",      'name' => 'Bodyweight with equipments'],
+            ['id'=> 20,     'icon_image' => "Images/exercise_types/asset3.png",      'name' => 'Cardio'],
+            ['id'=> 25,     'icon_image' => "Images/exercise_types/asset4.png",      'name' => 'Body Weight'],
+            ['id'=> 30,     'icon_image' => "Images/exercise_types/asset5.png",      'name' => 'Stretching & Mobility'],
+            ['id'=> 35,     'icon_image' => "Images/exercise_types/asset6.png",      'name' => 'Resistance Band'],
             
             
         ]);

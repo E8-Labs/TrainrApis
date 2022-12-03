@@ -24,13 +24,13 @@ return new class extends Migration
         });
 
         \DB::table('muscle_groups')->insert([
-            ['id'=> 10,     , 'muscle_type' => MuscleType::BackMuscle,      'muscle_group_name' => 'Hamstrings'],
-            ['id'=> 15,     , 'muscle_type' => MuscleType::FrontMuscle,     'muscle_group_name' => 'Chest'],
-            ['id'=> 20,     , 'muscle_type' => MuscleType::FrontMuscle,     'muscle_group_name' => 'Biceps'],
-            ['id'=> 25,     , 'muscle_type' => MuscleType::FrontMuscle,     'muscle_group_name' => 'Triceps'],
-            ['id'=> 30,     , 'muscle_type' => MuscleType::FrontMuscle,     'muscle_group_name' => 'Shoulders'],
-            ['id'=> 35,     , 'muscle_type' => MuscleType::FrontMuscle,     'muscle_group_name' => 'Core'],
-            ['id'=> 40,     , 'muscle_type' => MuscleType::BackMuscle,      'muscle_group_name' => 'Glutes'],
+            ['id'=> 10,    'muscle_type' => MuscleType::BackMuscle,      'muscle_group_name' => 'Hamstrings'],
+            ['id'=> 15,    'muscle_type' => MuscleType::FrontMuscle,     'muscle_group_name' => 'Chest'],
+            ['id'=> 20,    'muscle_type' => MuscleType::FrontMuscle,     'muscle_group_name' => 'Biceps'],
+            ['id'=> 25,    'muscle_type' => MuscleType::FrontMuscle,     'muscle_group_name' => 'Triceps'],
+            ['id'=> 30,    'muscle_type' => MuscleType::FrontMuscle,     'muscle_group_name' => 'Shoulders'],
+            ['id'=> 35,    'muscle_type' => MuscleType::FrontMuscle,     'muscle_group_name' => 'Core'],
+            ['id'=> 40,    'muscle_type' => MuscleType::BackMuscle,      'muscle_group_name' => 'Glutes'],
             
             
         ]);
