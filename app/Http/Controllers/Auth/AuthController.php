@@ -111,7 +111,7 @@ class AuthController extends Controller
     	// return "Creating user";
 				if($request->hasFile('profile_image'))
 				{
-					$data=$request->file('profile_image')->store('Images');
+					$data=$request->file('profile_image')->store(\Config::get('constants.profile_images_save'));
 					$profile->image_url = $data;
 					
 				}

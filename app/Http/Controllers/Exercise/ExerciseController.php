@@ -57,7 +57,7 @@ class ExerciseController extends Controller
 				$ex->youtube_url = $request->youtube_url;
 			}
 
-			$data=$request->file('cover_image')->store('Images/exercise');
+			$data=$request->file('cover_image')->store(\Config::get('constants.exercise_images_save'));
 			$ex->cover_image = $data;
 			$id = $ex->save();
 

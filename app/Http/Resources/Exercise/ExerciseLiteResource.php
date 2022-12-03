@@ -23,7 +23,7 @@ class ExerciseLiteResource extends JsonResource
         return [
             "id" => $this->id,
             "exercise_title" => $this->exercise_title,
-            "cover_image"=> $this->cover_image,
+            "cover_image"=> \Config::get('constants.base_url') . $this->cover_image,
             "youtube_url"=> $this->youtube_url,
             "set_count" => $this->set_count,
             "sets"      => $sets,
