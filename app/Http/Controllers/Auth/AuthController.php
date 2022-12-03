@@ -41,6 +41,29 @@ class AuthController extends Controller
 
     }
 
+
+    public function GetUserProfile(Request $request)
+    {
+    	$user = Auth::user();
+    	if($user){
+    		$profile = Profile::where('user_id', $user->id)->first();
+        	$data = new UserProfileFullResource($profile);
+        	return response()->json([
+                'status' => true,
+                'data'   => $data,
+                'message'=> 'User data'
+         	]);
+    	}
+    	else{
+    		return response()->json([
+            		'status' => false,
+            		'message' => "Unauthorized",
+            		'data' => NULL,
+            
+        		]);
+    	}
+    }
+
     public function register(Request $request){
         
 

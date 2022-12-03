@@ -43,6 +43,8 @@ Route::post('verify_email', [AuthController::class, 'confirmVerificationCode']);
 
 
 
+Route::get('get_user_profile', [AuthController::class, 'GetUserProfile']);
+
 
 Route::post('add_exercise', [ExerciseController::class, 'AddExercise']);
 Route::get('get_user_exercises', [ExerciseController::class, 'GetExerciseListForUser']);

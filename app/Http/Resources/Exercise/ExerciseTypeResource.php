@@ -16,8 +16,8 @@ class ExerciseTypeResource extends JsonResource
     {
         return[
             'id' => $this->id,
-            'name', $this->name,
-            'icon_image' => \Config.get('constants.base_url') . $this->icon_image;
+            'name'=> $this->name,
+            'icon_image' => $this->icon_image,
         ];
     }
 }
