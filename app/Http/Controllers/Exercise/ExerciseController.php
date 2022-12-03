@@ -16,6 +16,7 @@ use App\Models\ExerciseType;
 use App\Models\MuscleGroup;
 
 use App\Http\Resources\Exercise\ExerciseLiteResource;
+use App\Http\Resources\Exercise\ExerciseTypeResource;
 
 
 class ExerciseController extends Controller
@@ -120,7 +121,7 @@ class ExerciseController extends Controller
     	$user = Auth::user();
     	if($user){
     		$list = ExerciseType::get();
-    		return response()->json(['status' => true, 'message' => 'Exercise Types', 'data' => $list]);
+    		return response()->json(['status' => true, 'message' => 'Exercise Types', 'data' => ExerciseTypeResource::collection($list)]);
     	}
     	else{
     		return response()->json(['status' => false, 'data' => null, 'message' => 'Unauthorized access']);
