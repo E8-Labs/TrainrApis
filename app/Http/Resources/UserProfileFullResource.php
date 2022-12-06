@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\User;
+use App\Models\User\UserExpertise;
+use App\Models\User\AllExpertise;
 
 class UserProfileFullResource extends JsonResource
 {
@@ -21,6 +23,10 @@ class UserProfileFullResource extends JsonResource
         if($p === NULL){
             $p = "email";
         }
+
+        $expertise = AllExpertise::join('user_expertises', 'user_expertises.expertise_id', '=', 'all_expertises.id')
+        ->where('user_expertises.user_id', $user->id)->select(['user_expertises.id', 'name', 'icon_image'])->get();
+        // $expertise = UserExpertise::where('user_id', $user->id)->get();
         return [
             "id" => $this->user_id,
             "email" => $user->email,
@@ -28,6 +34,7 @@ class UserProfileFullResource extends JsonResource
             "username" => $this->username,
             "profile_image" => \Config::get('constants.base_url').$this->image_url,
             "authProvider" => $p,
+            'user_expertise' => $expertise,
             'city' => $this->city,
             "state" => $this->state,
             'lat' => $this->lat,

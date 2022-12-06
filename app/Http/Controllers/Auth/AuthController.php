@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\User\UserExpertise;
 use App\Models\User\VerificationCode;
 use Illuminate\Support\Facades\Mail;
 
@@ -89,6 +90,19 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
         if($user){
+        	$added = $this->AddExpertise($request, $user->id);
+        	if($added){
+
+        	}
+        	else{
+        		DB::rollBack();
+        		return response()->json([
+            		'status' => false,
+            		'message' => "Error adding expertise",
+            		'data' => NULL,
+            
+        		]);
+        	}
         	$profile = $this->AddProfile($request, $user);
         	// return $profile;
         	if($profile->message){
@@ -128,6 +142,28 @@ class AuthController extends Controller
 
         
     }
+
+    private function AddExpertise(Request $request, $id){
+		$expertise = $request->expertise;
+		// echo json_encode($sets);
+		// return false;
+		foreach($expertise as $setData){
+			// echo json_encode($setData);
+			$ex = new UserExpertise;
+			$ex->expertise_id = $setData;
+			
+			$ex->user_id = $id;
+			$saved = $ex->save();
+			if($saved){
+
+			}
+			else{
+				return false;
+			}
+
+		}
+		return true;
+	}
 
     public function AddProfile(Request $request, User $user){
     	$profile=new Profile;
