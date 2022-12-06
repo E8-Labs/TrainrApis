@@ -24,22 +24,22 @@ class UserProfileLiteResource extends JsonResource
             $p = "email";
         }
 
-        $expertise = AllExpertise::->join('user_expertises', 'user_expertises.expertise_id', '=', 'all_expertises.id')
-        ->where('user_expertise.user_id', $user->id)->get();
+        // $expertise = AllExpertise::join('user_expertises', 'user_expertises.expertise_id', '=', 'all_expertises.id')
+        // ->where('user_expertises.user_id', $user->id)->select(['user_expertises.id', 'name', 'icon_image'])->get();
         // $expertise = UserExpertise::where('user_id', $user->id)->get();
         return [
             "id" => $this->user_id,
-            "email" => $user->email,
+            // "email" => $user->email,
             "name" => $this->full_name,
             "username" => $this->username,
             "profile_image" => \Config::get('constants.base_url').$this->image_url,
-            "authProvider" => $p,
-            'user_expertise' => $expertise,
+            // "authProvider" => $p,
+            // 'user_expertise' => $expertise,
             'city' => $this->city,
             "state" => $this->state,
-            'lat' => $this->lat,
-            'lang' => $this->lang,
-             'role' => $user->role,
+            // 'lat' => $this->lat,
+            // 'lang' => $this->lang,
+            //  'role' => $user->role,
              'bio' => $this->bio,
 
         ];

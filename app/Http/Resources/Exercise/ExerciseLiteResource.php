@@ -26,16 +26,16 @@ class ExerciseLiteResource extends JsonResource
                 $type = ExerciseType::where('id', $this->exercise_type)->first();
                 $group = MuscleGroup::where('id', $this->muscle_group)->first();
         return [
-            "id" => $this->id,
+            "id" => (int)$this->id,
             "exercise_title" => $this->exercise_title,
             "cover_image"=> \Config::get('constants.base_url') . $this->cover_image,
             "youtube_url"=> $this->youtube_url,
-            "set_count" => $this->set_count,
+            "set_count" => (int)$this->set_count,
             "sets"      => $sets,
-            "difficulty"=> $this->difficulty,
+            "difficulty"=> (int)$this->difficulty,
             "muscle_group"=> $group,
             "exercise_type"=> $type,
-            "user_id"=> $this->user_id,
+            "user_id"=> (int)$this->user_id,
             "created_at"=> $this->created_at,
             "updated_at"=> $this->updated_at
 

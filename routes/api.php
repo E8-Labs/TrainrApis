@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Exercise\ExerciseController;
 // use App\Http\Controllers\Auth\ForgotPasswordController;
-// use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\User\UserController;
 // use App\Http\Controllers\Admin\AdminController;
 // use App\Http\Controllers\ProfileUpdateController;
 // use App\Http\Controllers\NotificationsController;
@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post("register",[AuthController::class,'register']);
 Route::post("login",[AuthController::class,'login']);
+Route::get("get_coaches",[UserController::class,'GetTrainrsListForClient']);
 Route::post('send_code', [AuthController::class, 'sendVerificationMail']);
 Route::post('verify_email', [AuthController::class, 'confirmVerificationCode']);
 
