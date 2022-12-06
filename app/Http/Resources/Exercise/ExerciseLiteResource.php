@@ -8,6 +8,8 @@ use App\Models\ExerciseSet;
 use App\Models\ExerciseType;
 use App\Models\MuscleGroup;
 
+use App\Http\Resources\Exercise\ExerciseTypeResource;
+
 class ExerciseLiteResource extends JsonResource
 {
     /**
@@ -20,6 +22,9 @@ class ExerciseLiteResource extends JsonResource
     {
         $sets = ExerciseSet::where('exercise_id', $this->id)
                 ->get();
+
+                $type = ExerciseType::where('id', $this->exercise_type)->first();
+                $group = MuscleGroup::where('id', $this->muscle_group)->first();
         return [
             "id" => $this->id,
             "exercise_title" => $this->exercise_title,
@@ -28,8 +33,8 @@ class ExerciseLiteResource extends JsonResource
             "set_count" => $this->set_count,
             "sets"      => $sets,
             "difficulty"=> $this->difficulty,
-            "muscle_group"=> $this->muscle_group,
-            "exercise_type"=> $this->exercise_type,
+            "muscle_group"=> $group,
+            "exercise_type"=> $type,
             "user_id"=> $this->user_id,
             "created_at"=> $this->created_at,
             "updated_at"=> $this->updated_at

@@ -4,6 +4,7 @@ namespace App\Http\Resources\Exercise;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+
 class ExerciseTypeResource extends JsonResource
 {
     /**

@@ -45,7 +45,8 @@ class ExerciseController extends Controller
 					'validation_errors'=> $validator->errors()]);
 			}
 
-			DB::beginTransaction();
+			try{
+			    DB::beginTransaction();
 			$ex = new Exercise;
 			$ex->exercise_title = $request->title;
 			$ex->set_count = $request->set_count;
@@ -69,6 +70,15 @@ class ExerciseController extends Controller
 			}
 			else{
 				DB::rollBack();
+				return response()->json(['data'=> null, 'message' => 'Error Saving Exercise', 'status' => false]);
+			}
+			}
+			catch(\Exception $e){
+			    \Log::info("Exception adding exercise start");
+			    \Log::info($e);
+			    \Log::info($request->all());
+			    \Log::info("Exception adding exercise end");
+			    DB::rollBack();
 				return response()->json(['data'=> null, 'message' => 'Error Saving Exercise', 'status' => false]);
 			}
 			//add sets
@@ -108,8 +118,20 @@ class ExerciseController extends Controller
 			$off_set = $request->off_set;
 		}
 		if($user){
-			$list = Exercise::where('user_id', $user->id)->skip($off_set)->take(20)->get();
-			return response()->json(['data'=> ExerciseLiteResource::collection($list), 'message' => 'Error Saving Exercise', 'status' => true]);
+			$list = Exercise::where('user_id', $user->id)
+			->when($request->has('difficulty'), function ($query) use($request) {
+                   // echo 'has difficulty '. $request->difficulty;
+					$diff = $request->difficulty;
+                   if($diff != 0){
+                   		$query->where('difficulty', $diff);
+                   }
+            })
+            ->when($request->has('muscle_group'), function ($query) use($request) {
+                   
+                   $query->where('muscle_group','=', $request->muscle_group);
+            })
+			->skip($off_set)->take(20)->get();
+			return response()->json(['data'=> ExerciseLiteResource::collection($list), 'message' => 'Exercises', 'status' => true]);
 		}
 		else{
 			return response()->json(['data'=> null, 'message' => 'Unauthorized access', 'status' => false]);
