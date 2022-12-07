@@ -51,3 +51,4 @@ Route::post('add_exercise', [ExerciseController::class, 'AddExercise']);
 Route::get('get_user_exercises', [ExerciseController::class, 'GetExerciseListForUser']);
 Route::get('get_exercise_types', [ExerciseController::class, 'GetExerciseTypes']);
 Route::get('get_muscle_groups', [ExerciseController::class, 'GetMuscleGroups']);
+Route::get("get_clients",[UserController::class,'GetClientsListForTrainr']);

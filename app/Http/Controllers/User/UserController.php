@@ -57,4 +57,38 @@ class UserController extends Controller
 			}
 
     }
+
+    function GetClientsListForTrainr(Request $request){
+
+    	$user = Auth::user();
+    	if(!$user){
+    		return response()->json([
+            		'status' => false,
+            		'message' => "Unauthorized access: no token",
+            		'data' => NULL,
+            
+        		]);
+    	}
+			$off_set = 0;
+			if($request->has('off_set')){
+				$off_set = $request->off_set;
+			}
+
+			$profiles = Profile::where('role', '=', Role::RoleClient)
+			->when($request->has('search'), function ($query) use($request) {
+               // echo 'has difficulty '. $request->difficulty;
+				$search = $request->search;
+               
+               	$query->where('full_name', 'LIKE', "%$search%")->orWhere('username', 'LIKE', "%$search%");
+               
+            })
+			->skip($off_set)->take(20)->get();
+			return response()->json([
+        	    'status' => true,
+        	    'message' => 'User list',
+        	    'data' => UserProfileLiteResource::collection($profiles)
+        	]);
+			
+
+    }
 }
