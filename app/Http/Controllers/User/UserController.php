@@ -9,6 +9,7 @@ use App\Http\Resources\UserProfileFullResource;
 use App\Http\Resources\UserProfileLiteResource;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Profile;
 use App\Models\Role;
