@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Exercise\ExerciseController;
 // use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\User\UserController;
-// use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Trainr\TrainrWorkoutProgramController;
 // use App\Http\Controllers\ProfileUpdateController;
 // use App\Http\Controllers\NotificationsController;
 // use App\Http\Controllers\SocialLoginController;
@@ -52,3 +52,4 @@ Route::get('get_user_exercises', [ExerciseController::class, 'GetExerciseListFor
 Route::get('get_exercise_types', [ExerciseController::class, 'GetExerciseTypes']);
 Route::get('get_muscle_groups', [ExerciseController::class, 'GetMuscleGroups']);
 Route::get("get_clients",[UserController::class,'GetClientsListForTrainr']);
+Route::post('create_workout_program', [TrainrWorkoutProgramController::class, 'AddWorkout']);
