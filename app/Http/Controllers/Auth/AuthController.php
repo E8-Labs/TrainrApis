@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Models\UserTrainrs;
 use App\Models\Profile;
 use App\Models\Role;
 use App\Models\User\UserExpertise;
@@ -106,6 +107,12 @@ class AuthController extends Controller
         			]);
         		}
         	}
+        	else{// if client
+        		$trainr = new UserTrainrs;
+        		$trainr->client_id = $user->id;
+        		$trainr->trainr_id = $request->trainr_id;
+        		$trainr->save();
+        	}
         	$profile = $this->AddProfile($request, $user);
         	// return $profile;
         	if($profile->message){
@@ -183,6 +190,7 @@ class AuthController extends Controller
 				}
 		
 		$profile->full_name=$request->name;
+
 		$profile->role = $request->role;
 		$profile->username = $request->username;
 		$profile->user_id = $user->id;
