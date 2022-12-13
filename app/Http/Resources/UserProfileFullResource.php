@@ -8,6 +8,12 @@ use App\Models\User\UserExpertise;
 use App\Models\User\AllExpertise;
 use App\Models\UserTrainr;
 use App\Models\Profile;
+
+use App\Models\Exercise\Goal;
+use App\Models\Exercise\HealthCondition;
+use App\Models\Exercise\ClientHealthConditionsModel;
+use App\Models\Exercise\WorkoutFrequency;
+
 // use App\Http\Resources\UserProfileFullResource;
 use App\Http\Resources\UserProfileLiteResource;
 
@@ -33,6 +39,7 @@ class UserProfileFullResource extends JsonResource
 
         $expertise = AllExpertise::join('user_expertises', 'user_expertises.expertise_id', '=', 'all_expertises.id')
         ->where('user_expertises.user_id', $user->id)->select(['user_expertises.id', 'name', 'icon_image'])->get();
+        // $goals = Goal::where('user_id', $user->id)->get();
         // $expertise = UserExpertise::where('user_id', $user->id)->get();
         return [
             "id" => $this->user_id,
@@ -49,6 +56,13 @@ class UserProfileFullResource extends JsonResource
             'lang' => $this->lang,
              'role' => $user->role,
              'bio' => $this->bio,
+             'weight' => (int)$this->weight,
+             'workout_frequency' => (int)$this->workout_frequency,
+             'sleep_hours' => (int)$this->sleep_hours,
+             "height" => [
+                "height_inches" => (int)$this->height_inches,
+                "height_feet" => (int)$this->height_feet,
+             ]
 
         ];
     }

@@ -14,6 +14,10 @@ use App\Models\User;
 use App\Models\UserTrainrs;
 use App\Models\Profile;
 use App\Models\Role;
+use App\Models\Exercise\Goal;
+use App\Models\Exercise\HealthCondition;
+use App\Models\Exercise\ClientHealthConditionsModel;
+use App\Models\Exercise\WorkoutFrequency;
 use App\Models\User\UserExpertise;
 use App\Models\User\VerificationCode;
 use Illuminate\Support\Facades\Mail;
@@ -152,6 +156,111 @@ class AuthController extends Controller
 
         
     }
+
+
+
+    public function updateProfile(Request $request){
+    	$user = Auth::user();
+    	if($user == NULL){
+    		return response()->json([
+            		'status' => false,
+            		'message' => "User unauthorized",
+            		'data' => NULL,
+            
+        		]);
+    	}
+
+    	DB::beginTransaction();
+    	$profile = Profile::where('user_id', $user->id)->first();
+    	if($request->has('height_inches')){
+            // return "have height inches";
+    		$profile->height_inches = $request->height_inches;
+    	}
+        // else{
+        //     return "Don't have height inches";
+        // }
+    	if($request->has('height_feet')){
+    		$profile->height_feet = $request->height_feet;
+    	}
+
+    	if($request->has('weight')){
+    		$profile->weight = $request->weight;
+    	}
+    	if($request->has('workout_frequency')){
+    		$profile->workout_frequency = $request->workout_frequency;
+    	}
+    	if($request->has('sleep_hours')){
+    		$profile->sleep_hours = $request->sleep_hours;
+    	}
+    	$profile->save();
+
+    	if($request->has('goals')){
+    		$goals = $request->goals;
+    		foreach($goals as $goal){
+    			$userGoal = new Goal;
+    			$userGoal->goal_title = $goal["goal_title"];
+    			$userGoal->complete_by_date	= $goal["complete_by_date"];
+    			$userGoal->user_id = $user->id;
+    			$saved = $userGoal->save();
+    			if($saved){
+
+    			}
+    			else{
+    				DB::rollBack();
+    				//return an error saying goals not saved
+    				return response()->json([
+            			'status' => false,
+            			'message' => "Error saving user goals",
+            			'data' => NULL,
+            
+        			]);
+    			}
+    		}
+    	}
+        if($request->has('expertise')){
+            $saved = $this->AddExpertise($request, $user->id);
+            if($saved == false){
+                return response()->json([
+                        'status' => false,
+                        'message' => "Error saving user expertise",
+                        'data' => NULL,
+            
+                    ]);
+            }
+        }
+    	if($request->has('health_conditions')){
+    		$conditions = $request->health_conditions;
+    		foreach($conditions as $cond){
+    			$userCondition = new ClientHealthConditionsModel;
+    			$userCondition->health_condition = $cond;
+    			$userCondition->user_id = $user->id;
+    			$saved = $userCondition->save();
+    			if($saved){
+
+    			}
+    			else{
+    				DB::rollBack();
+    				//return an error saying goals not saved
+    				return response()->json([
+            			'status' => false,
+            			'message' => "Error saving user health conditions",
+            			'data' => NULL,
+            
+        			]);
+    			}
+    		}
+    	}
+    	DB::commit();
+
+		return response()->json([
+           	'status' => true,
+           	'data' => new UserProfileFullResource($profile),
+           	'message' => "Profile udpated",
+         
+        ]);
+
+    }
+
 
     private function AddExpertise(Request $request, $id){
 		$expertise = $request->expertise;
