@@ -12,13 +12,20 @@ use App\Models\User;
 use App\Models\Profile;
 use App\Models\Exercise;
 use App\Models\ExerciseSet;
-use App\Models\Exercise/CompletedWorkouts;
-use App\Models\Exercise/CompletedWorkoutExercise;
+// use App\Models\Exercise\WorkoutTime;
+use App\Models\Exercise\CompletedWorkouts;
+use App\Models\Exercise\CompletedWorkoutExercise;
 use App\Models\ExerciseType;
 use App\Models\MuscleGroup;
 
+use App\Models\Exercise\WorkoutTime;
+use App\Models\Exercise\WorkoutExercise;
+use App\Models\Exercise\Workout;
+
 use App\Http\Resources\Exercise\ExerciseLiteResource;
 use App\Http\Resources\Exercise\ExerciseTypeResource;
+
+use Carbon\Carbon;
 
 
 class ExerciseController extends Controller
@@ -172,6 +179,19 @@ class ExerciseController extends Controller
     		//check if completed workout table is populated or not
     		$cworkout = CompletedWorkouts::where('completed_date', $request->completed_date)->where('workout_id', $request->workout_id)->first();
 
+			$dateString = $request->completed_date;
+			$date = Carbon::createFromFormat('m-d-Y', $dateString);
+			$day_name = $date->format('l');// get the day name
+
+			//check if this workout is supposed to happen this day
+			$exDay = WorkoutTime::where('day', $day_name)->where('workout_id', $request->workout_id)->first();
+			if($exDay){
+				//workout happens on this day
+			}
+			else{
+				return response()->json(['status' => false, 'data' => null, 'message' => 'Workout does not happen on ' . $day_name . 's']);
+			}
+
     		if($cworkout){
 
     		}
@@ -193,24 +213,48 @@ class ExerciseController extends Controller
 
     		$ex = Exercise::where('id', $request->exercise_id)->first();
     		$sets = ExerciseSet::where('exercise_id', $ex->id)->get();
+
+    		$ex_ids = WorkoutExercise::where('worktime_id', $exDay->id)->pluck('exercise_id')->toArray();
+
+    		$totalRepsOnThisDay = ExerciseSet::whereIn('exercise_id', $ex_ids)->sum('rep_count'); // reps that are required for a complete workout
+
+    		
+
+
     		$cwExercise->exercise_id = $ex->id;
 
     		if($request->has('reps')){
     			$cwExercise->reps = $request->reps;
     		}
     		else{
-    			$cwExercise->reps = ExerciseSet::where('exercise_id', $ex->id)->count('rep_count');
+    			$reps = ExerciseSet::where('exercise_id', $ex->id)->sum('rep_count');
+    			// echo json_encode(["rep" => $reps]);
+    			$cwExercise->reps = $reps;
     		}
 
     		if($request->has('sets')){
     			$cwExercise->sets = $request->sets;
     		}
     		else{
-    			$cwExercise->sets = ExerciseSet::where('exercise_id', $ex->id)->count();
+    			$sets = ExerciseSet::where('exercise_id', $ex->id)->count();
+    			// echo json_encode(["sets" => $sets]);
+    			$cwExercise->sets = $sets;
     		}
 
     		$saved = $cwExercise->save();
     		if($saved){
+    			// $completedWorkoutIds = CompletedWorkouts::where('workout_id', $request->workout_id)->whre('completed_date')->pluch('id')->toArray();
+
+    			$totalRepsUserPerformed = CompletedWorkoutExercise::where('completed_workout_id', $cworkout->id)->get()->sum(function($t){ 
+    					return $t->reps * $t->sets; 
+				});
+
+    			$per = 100 * $totalRepsUserPerformed / $totalRepsOnThisDay;
+    			$cworkout->percentage = $per;
+    			$cworkout->save();
+    			// return $per;
+    			
+
     			return response()->json(['status' => true, 'data' => null, 'message' => 'Workout completed']);
     		}
     		else{
@@ -225,6 +269,8 @@ class ExerciseController extends Controller
 
 
     }
+
+   
 }
 
 
