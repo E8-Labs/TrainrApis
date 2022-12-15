@@ -48,9 +48,17 @@ Route::get('get_user_profile', [AuthController::class, 'GetUserProfile']);
 Route::post('update_user_profile', [AuthController::class, 'updateProfile']);
 
 
+Route::post('complete_exercise', [ExerciseController::class, 'CompleteExercise']);
+
 Route::post('add_exercise', [ExerciseController::class, 'AddExercise']);
 Route::get('get_user_exercises', [ExerciseController::class, 'GetExerciseListForUser']);
 Route::get('get_exercise_types', [ExerciseController::class, 'GetExerciseTypes']);
 Route::get('get_muscle_groups', [ExerciseController::class, 'GetMuscleGroups']);
 Route::get("get_clients",[UserController::class,'GetClientsListForTrainr']);
 Route::post('create_workout_program', [TrainrWorkoutProgramController::class, 'AddWorkout']);
+
+
+
+
+
+

@@ -12,6 +12,8 @@ use App\Models\User;
 use App\Models\Profile;
 use App\Models\Exercise;
 use App\Models\ExerciseSet;
+use App\Models\Exercise/CompletedWorkouts;
+use App\Models\Exercise/CompletedWorkoutExercise;
 use App\Models\ExerciseType;
 use App\Models\MuscleGroup;
 
@@ -161,4 +163,77 @@ class ExerciseController extends Controller
     	}
 
     }
+
+
+    function CompleteExercise(Request $request){
+    	$user = Auth::user();
+
+    	if($user){
+    		//check if completed workout table is populated or not
+    		$cworkout = CompletedWorkouts::where('completed_date', $request->completed_date)->where('workout_id', $request->workout_id)->first();
+
+    		if($cworkout){
+
+    		}
+    		else{
+    			//dont have already added the workout
+    			//add the workout
+    			$cworkout = new CompletedWorkouts;
+    			$cworkout->workout_id = $request->workout_id;
+    			$cworkout->completed_date = $request->completed_date;
+    			$cworkout->user_id = $user->id;
+    			$saved = $cworkout->save();
+    			if(!$saved){
+    				return response()->json(['status' => false, 'data' => null, 'message' => 'Error completing workout']);
+    			}
+    		}
+
+    		$cwExercise = new CompletedWorkoutExercise;
+    		$cwExercise->completed_workout_id = $cworkout->id;
+
+    		$ex = Exercise::where('id', $request->exercise_id)->first();
+    		$sets = ExerciseSet::where('exercise_id', $ex->id)->get();
+    		$cwExercise->exercise_id = $ex->id;
+
+    		if($request->has('reps')){
+    			$cwExercise->reps = $request->reps;
+    		}
+    		else{
+    			$cwExercise->reps = ExerciseSet::where('exercise_id', $ex->id)->count('rep_count');
+    		}
+
+    		if($request->has('sets')){
+    			$cwExercise->sets = $request->sets;
+    		}
+    		else{
+    			$cwExercise->sets = ExerciseSet::where('exercise_id', $ex->id)->count();
+    		}
+
+    		$saved = $cwExercise->save();
+    		if($saved){
+    			return response()->json(['status' => true, 'data' => null, 'message' => 'Workout completed']);
+    		}
+    		else{
+    			return response()->json(['status' => false, 'data' => null, 'message' => 'Error completing workout']);
+    		}
+
+
+    	}
+    	else{
+    		return response()->json(['status' => false, 'data' => null, 'message' => 'Unauthorized access']);
+    	}
+
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
