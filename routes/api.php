@@ -8,7 +8,7 @@ use App\Http\Controllers\Exercise\ExerciseController;
 // use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Trainr\TrainrWorkoutProgramController;
-// use App\Http\Controllers\ProfileUpdateController;
+use App\Http\Controllers\Workout\HomeWorkoutController;
 // use App\Http\Controllers\NotificationsController;
 // use App\Http\Controllers\SocialLoginController;
 
@@ -48,6 +48,7 @@ Route::get('get_user_profile', [AuthController::class, 'GetUserProfile']);
 Route::post('update_user_profile', [AuthController::class, 'updateProfile']);
 
 
+Route::get('client_dashboard', [HomeWorkoutController::class, 'getClientDashboardData']);
 Route::post('complete_exercise', [ExerciseController::class, 'CompleteExercise']);
 
 Route::post('add_exercise', [ExerciseController::class, 'AddExercise']);
