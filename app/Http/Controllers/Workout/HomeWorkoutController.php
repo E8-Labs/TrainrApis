@@ -69,7 +69,7 @@ class HomeWorkoutController extends Controller
 			// $exDay = WorkoutTime::where('day', $day_name)->where('workout_id', $request->workout_id)->first();
 			if(count($woutIds) > 0){
 				//workout happens on this day
-				return response()->json(['data' => ['workouts'=> WorkoutFullResource::collection($workouts), 'meal_percentage' => $meal_percentage, 'workout_percentage'=> $wout_percentage]]);
+				return response()->json(["status" => true, "message" => "Dashboard data obtained", 'data' => ['workouts'=> WorkoutFullResource::collection($workouts), 'meal_percentage' => $meal_percentage, 'workout_percentage'=> $wout_percentage]]);
 			}
 			else{
 				return response()->json(['status' => false, 'data' => null, 'message' => 'No workout is created for ' . $day_name . 's']);
