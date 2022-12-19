@@ -60,16 +60,45 @@ class HomeWorkoutController extends Controller
     		//Get the total number of reps completed by client on this day
     		$completed_wout_ids = CompletedWorkouts::where('completed_date', $dateString)->where('user_id', $user->id)->pluck('id')->toArray();
     		$totalRepsUserPerformed = CompletedWorkoutExercise::whereIn('completed_workout_id', $completed_wout_ids)->get()->sum(function($t){ 
-    			return $t->reps * $t->sets; 
+    			return $t->reps;// * $t->sets; 
 			});
 
-    		$wout_percentage = 100 * $totalRepsUserPerformed / $totalRepsOnThisDay;
+    		if($totalRepsOnThisDay > 0){
+    		    $wout_percentage = 100 * $totalRepsUserPerformed / $totalRepsOnThisDay;
+    		}
+    		else{
+    		    $wout_percentage = 0;
+    		}
 
+            foreach($workouts as $w){
+                $w_work_time_ds = WorkoutTime::where('workout_id', $w->id)->pluck('id')->toArray();
+                $w_ex_ids = WorkoutExercise::whereIn('worktime_id', $w_work_time_ds)->pluck('exercise_id')->toArray();
+                // return $ex_ids;
+                $totalReps = ExerciseSet::whereIn('exercise_id', $w_ex_ids)->sum('rep_count');
+                $w->total_reps = $totalReps;
+
+                $completed_wout_ids = CompletedWorkouts::where('completed_date', $dateString)
+                ->where('user_id', $user->id)
+                ->where('workout_id', $w->id)
+                ->pluck('id')->toArray();
+                $totalRepsUserPerformedForThisWorkout = CompletedWorkoutExercise::whereIn('completed_workout_id', $completed_wout_ids)->get()->sum(function($t){ 
+                    return $t->reps;// * $t->sets; 
+                });
+                if($totalRepsUserPerformedForThisWorkout > 0){
+                    $w->total_reps_performed = $totalRepsUserPerformedForThisWorkout;
+                    $w->percentage = 100 * $totalReps / $totalRepsUserPerformedForThisWorkout;
+                }
+                else{
+                    $w->total_reps_performed = $totalRepsUserPerformedForThisWorkout;
+                    $w->percentage = 0;
+                }
+                
+            }
 
 			// $exDay = WorkoutTime::where('day', $day_name)->where('workout_id', $request->workout_id)->first();
 			if(count($woutIds) > 0){
 				//workout happens on this day
-				return response()->json(["status" => true, "message" => "Dashboard data obtained", 'data' => ['workouts'=> WorkoutFullResource::collection($workouts), 'meal_percentage' => $meal_percentage, 'workout_percentage'=> $wout_percentage]]);
+				return response()->json(["status" => true, "message" => "Dashboard data obtained", 'data' => ['workouts'=> WorkoutFullResource::collection($workouts), 'meal_percentage' => $meal_percentage, 'workout_percentage'=> $wout_percentage, "day" => $day_name, "date_string" => $request->date, "date" => $date]]);
 			}
 			else{
 				return response()->json(['status' => false, 'data' => null, 'message' => 'No workout is created for ' . $day_name . 's']);

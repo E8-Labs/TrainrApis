@@ -23,7 +23,8 @@ return new class extends Migration
             $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
 
             $table->integer('reps')->default(0);
-            $table->integer('sets')->default(0);
+            $table->unsignedBigInteger('set_id');
+            $table->foreign('set_id')->references('id')->on('exercise_sets')->onDelete('cascade');
             $table->timestamps();
         });
     }

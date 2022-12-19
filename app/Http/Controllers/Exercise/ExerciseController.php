@@ -232,21 +232,21 @@ class ExerciseController extends Controller
     			$cwExercise->reps = $reps;
     		}
 
-    		if($request->has('sets')){
-    			$cwExercise->sets = $request->sets;
+    		if($request->has('set_id')){
+    			$cwExercise->set_id = $request->set_id;
     		}
-    		else{
-    			$sets = ExerciseSet::where('exercise_id', $ex->id)->count();
-    			// echo json_encode(["sets" => $sets]);
-    			$cwExercise->sets = $sets;
-    		}
+    		// else{
+    		// 	$sets = ExerciseSet::where('exercise_id', $ex->id)->count();
+    		// 	// echo json_encode(["sets" => $sets]);
+    		// 	$cwExercise->sets = $sets;
+    		// }
 
     		$saved = $cwExercise->save();
     		if($saved){
     			// $completedWorkoutIds = CompletedWorkouts::where('workout_id', $request->workout_id)->whre('completed_date')->pluch('id')->toArray();
 
     			$totalRepsUserPerformed = CompletedWorkoutExercise::where('completed_workout_id', $cworkout->id)->get()->sum(function($t){ 
-    					return $t->reps * $t->sets; 
+    					return $t->reps ;//* $t->sets; 
 				});
 
     			$per = 100 * $totalRepsUserPerformed / $totalRepsOnThisDay;
