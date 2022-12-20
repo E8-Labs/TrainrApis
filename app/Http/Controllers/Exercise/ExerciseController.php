@@ -254,8 +254,8 @@ class ExerciseController extends Controller
     			$cworkout->save();
     			// return $per;
     			
-
-    			return response()->json(['status' => true, 'data' => null, 'message' => 'Workout completed']);
+    			$workout = Workout::where('id', $request->workout_id)->first();
+    			return response()->json(['status' => true, 'data' => new WorkoutFullResource($workout), 'message' => 'Workout completed']);
     		}
     		else{
     			return response()->json(['status' => false, 'data' => null, 'message' => 'Error completing workout']);
