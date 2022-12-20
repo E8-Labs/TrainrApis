@@ -24,6 +24,7 @@ use App\Models\Exercise\Workout;
 
 use App\Http\Resources\Exercise\ExerciseLiteResource;
 use App\Http\Resources\Exercise\ExerciseTypeResource;
+use App\Http\Resources\Exercise\WorkoutFullResource;
 
 use Carbon\Carbon;
 

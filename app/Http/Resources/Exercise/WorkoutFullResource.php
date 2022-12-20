@@ -42,9 +42,9 @@ class WorkoutFullResource extends JsonResource
             'trainr' => new UserProfileLiteResource($trainr),
             'client' => new UserProfileLiteResource($client),
             "daily_exercies" => $workTimes,
-            "percentage" => $this->percentage,
-            "total_reps" => $this->total_reps,
-            "total_reps_performed" => $this->total_reps_performed
+            "percentage" => (double)$this->percentage,
+            "total_reps" => (int)$this->total_reps,
+            "total_reps_performed" => (int)$this->total_reps_performed
         ];
     }
 }
