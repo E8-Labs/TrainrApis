@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\Role;
 use App\Models\Exercise;
 use App\Models\ExerciseSet;
 // use App\Models\Exercise\WorkoutTime;
@@ -18,6 +19,7 @@ use App\Models\Exercise\CompletedWorkoutExercise;
 use App\Models\ExerciseType;
 use App\Models\MuscleGroup;
 
+use App\Models\UserTrainrs;
 use App\Models\Exercise\WorkoutTime;
 use App\Models\Exercise\WorkoutExercise;
 use App\Models\Exercise\Workout;
@@ -128,6 +130,7 @@ class ExerciseController extends Controller
 			$off_set = $request->off_set;
 		}
 		if($user){
+			$profile = Profile::where('user_id', $user->id)->first();
 			$list = Exercise::where('user_id', $user->id)
 			->when($request->has('difficulty'), function ($query) use($request) {
                    // echo 'has difficulty '. $request->difficulty;
@@ -141,6 +144,23 @@ class ExerciseController extends Controller
                    $query->where('muscle_group','=', $request->muscle_group);
             })
 			->skip($off_set)->take(20)->get();
+
+			if($profile->role == Role::RoleClient){
+				$user_trainr_id = UserTrainrs::where('client_id', $profile->user_id)->pluck('trainr_id')->first();
+				$list = Exercise::where('user_id', $user_trainr_id)
+				->when($request->has('difficulty'), function ($query) use($request) {
+            	       // echo 'has difficulty '. $request->difficulty;
+					$diff = $request->difficulty;
+            	       if($diff != 0){
+            	       		$query->where('difficulty', $diff);
+            	       }
+            	})
+            	->when($request->has('muscle_group'), function ($query) use($request) {
+            	       
+            	       $query->where('muscle_group','=', $request->muscle_group);
+            	})
+				->skip($off_set)->take(20)->get();
+			}
 			return response()->json(['data'=> ExerciseLiteResource::collection($list), 'message' => 'Exercises', 'status' => true]);
 		}
 		else{
