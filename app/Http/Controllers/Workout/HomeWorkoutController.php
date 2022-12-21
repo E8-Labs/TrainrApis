@@ -84,6 +84,9 @@ class HomeWorkoutController extends Controller
                 $totalRepsUserPerformedForThisWorkout = CompletedWorkoutExercise::whereIn('completed_workout_id', $completed_wout_ids)->get()->sum(function($t){ 
                     return $t->reps;// * $t->sets; 
                 });
+
+                $completed_workout_ids = CompletedWorkoutExercise::whereIn('completed_workout_id', $completed_wout_ids)->pluck('set_id')->toArray();
+                $w->completed_workout_ids = $completed_workout_ids;
                 if($totalReps > 0){
                     $w->total_reps_performed = $totalRepsUserPerformedForThisWorkout;
                     $w->percentage = 100 * $totalRepsUserPerformedForThisWorkout / $totalReps;
