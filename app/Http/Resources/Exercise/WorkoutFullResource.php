@@ -45,6 +45,7 @@ class WorkoutFullResource extends JsonResource
             "percentage" => (double)$this->percentage,
             "total_reps" => (int)$this->total_reps,
             "total_reps_performed" => (int)$this->total_reps_performed
+            'completed_workout_ids' => $w->completed_workout_ids,
         ];
     }
 }
