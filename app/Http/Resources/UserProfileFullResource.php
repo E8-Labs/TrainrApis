@@ -43,6 +43,8 @@ class UserProfileFullResource extends JsonResource
         // $expertise = UserExpertise::where('user_id', $user->id)->get();
         return [
             "id" => $this->user_id,
+            "user_id" => $this->user_id,
+            "comment" => "User_id and id will be same because id => this->user_id",
             "email" => $user->email,
             "name" => $this->full_name,
             "username" => $this->username,

@@ -9,7 +9,7 @@ use App\Http\Controllers\Exercise\ExerciseController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Trainr\TrainrWorkoutProgramController;
 use App\Http\Controllers\Workout\HomeWorkoutController;
-// use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\Chat\ChatController;
 // use App\Http\Controllers\SocialLoginController;
 
 /*
@@ -62,4 +62,14 @@ Route::post('create_workout_program', [TrainrWorkoutProgramController::class, 'A
 
 
 
+//Chat
+Route::post("create_chat",[ChatController::class,'createChat']);
 
+Route::get('load_chats', [ChatController::class, 'loadChats']);
+Route::post('send_message', [ChatController::class, 'sendMessage']);//New
+    Route::post("update_chat", [ChatController::class, 'updateChat']);
+    Route::post('resetReadCount', [ChatController::class, 'resetReadCounter']);
+    Route::post('delete_chat', [ChatController::class, 'deleteChat']);
+    Route::post('upload_chat_image', [ChatController::class, 'uploadChatImage']);
+    Route::post('user_unread_count', [ChatController::class, 'getUnreadMessagesCount']);
+    Route::post('get_chat_by_id', [ChatController::class, 'showChat']);
