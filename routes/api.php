@@ -66,6 +66,7 @@ Route::post('create_workout_program', [TrainrWorkoutProgramController::class, 'A
 
 //Chat
 Route::post("create_chat",[ChatController::class,'createChat']);
+Route::get('get_messages', [ChatController::class, 'getMessagesForChat']);
 
 Route::get('load_chats', [ChatController::class, 'loadChats']);
 Route::post('send_message', [ChatController::class, 'sendMessage']);//New
