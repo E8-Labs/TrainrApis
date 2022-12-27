@@ -26,6 +26,7 @@ use App\Models\Exercise\Workout;
 use App\Http\Resources\Exercise\ExerciseLiteResource;
 use App\Http\Resources\Exercise\ExerciseTypeResource;
 use App\Http\Resources\Exercise\WorkoutFullResource;
+use App\Http\Resources\UserProfileLiteResource;
 
 use Carbon\Carbon;
 
@@ -130,7 +131,7 @@ class HomeWorkoutController extends Controller
             $new_clients = Profile::join('user_trainrs', 'profiles.user_id', 'user_trainrs.client_id')->where('user_trainrs.trainr_id', $user->id)
             ->orderBy('profiles.created_at', 'DESC')->take(5)
             ->get();
-            return response()->json(["status" => true, "message" => "Dashboard data obtained", 'data' => ["top_clients" => $top_clients, "new_clients" => $new_clients, 'workouts' => $total_workouts, 'meals'=> $total_meals, "monthly_recurring_income" => $total_earnings_monthly]]);
+            return response()->json(["status" => true, "message" => "Dashboard data obtained", 'data' => ["top_clients" => UserProfileLiteResource::collection($top_clients), "new_clients" => UserProfileLiteResource::collection($new_clients), 'workouts' => $total_workouts, 'meals'=> $total_meals, "monthly_recurring_income" => $total_earnings_monthly]]);
         }
         else{
             return response()->json(['data'=> null, 'message' => 'Unauthorized access', 'status' => false]);
