@@ -22,9 +22,9 @@ class ChatLiteResource extends JsonResource
         ->get();
 
         return [
-            "chat_id" => $this->chat_id,
+            "chat_id" => (int)$this->chat_id,
             "last_message" => $this->lastmessage,
-            "chat_type" => $this->chat_type,
+            "chat_type" => (int)$this->chat_type,
 
             "last_message_date" => $this->last_message_date,
             "users" => ChatProfileResource::collection($profiles),

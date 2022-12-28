@@ -36,7 +36,7 @@ class ChatMessageResource extends JsonResource
             "id" => $this->id,
             "message" => $this->message,
             "image_url" => $url,
-            'chat_id' => $this->chat_id,
+            'chat_id' => (int)$this->chat_id,
             "image_width" => $this->image_width,
             'image_height' => $this->image_height,
             "user" => new ChatProfileResource($profile),
