@@ -52,7 +52,11 @@ class AuthController extends Controller
     public function GetUserProfile(Request $request)
     {
     	$user = Auth::user();
+
     	if($user){
+            if($request->has('user_id')){
+                 $user = User::where('id', $request->user_id);
+            }
     		$profile = Profile::where('user_id', $user->id)->first();
         	$data = new UserProfileFullResource($profile);
         	return response()->json([
