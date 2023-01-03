@@ -34,6 +34,7 @@ class UserProfileFullResource extends JsonResource
         if($p === NULL){
             $p = "email";
         }
+        $goals = Goal::where("user_id", $user->id)->get();
         $trainr = Profile::join('user_trainrs', 'profiles.user_id', '=', 'user_trainrs.trainr_id')
         ->where('client_id', $user->id)->first();
 
@@ -53,6 +54,7 @@ class UserProfileFullResource extends JsonResource
             'user_expertise' => $expertise,
             'city' => $this->city,
             "state" => $this->state,
+            "goals" => $goals,
             'trainr' => new UserProfileLiteResource($trainr),
             'lat' => $this->lat,
             'lang' => $this->lang,

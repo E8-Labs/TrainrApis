@@ -116,9 +116,10 @@ class ChatController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'chat_id' => 'required',
-            'user_id' => 'required',
+            // 'user_id' => 'required',
             'chat_image' => 'required',
         ]);
+        $user = Auth::user();
         if ($validator->fails()) {
             return response()->json(['status' => false,
                 'message' => 'validation error',
@@ -127,7 +128,7 @@ class ChatController extends Controller
         }
 
         $chatid = $request->chat_id;
-        $userid = $request->user_id;
+        $userid = $user->id;
         $last_message_date = $request->last_message_date;
 
         if ($request->hasFile('chat_image')) {
@@ -233,7 +234,7 @@ class ChatController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'users' => 'required',
-            "last_message_date" => 'required',
+            // "last_message_date" => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(['status' => false,
@@ -256,7 +257,7 @@ class ChatController extends Controller
 
         DB::beginTransaction();
 
-        $chat = $this->checkChatExists($user1Details, $user2Details, $orderId);
+        $chat = $this->checkChatExists($user1Details, $user2Details);
         // return response()->json([
         //         "data" => $chat,
         //         'message' => 'Chats already exists',
@@ -282,7 +283,7 @@ class ChatController extends Controller
         if ($request->has('order_id')) {
             $chat->order_id = $orderId;
         }
-        $chat->last_message_date = $request->last_message_date;
+        // $chat->last_message_date = $request->last_message_date;
         $chat->lastmessage = '';
         $chat->chat_type = $chatType;
         $result = $chat->save();
@@ -348,45 +349,19 @@ class ChatController extends Controller
         ]);
     }
 
-    function checkChatExists($user1, $user2, $orderId)
+    function checkChatExists($user1, $user2)
     {
-        if ($orderId != '') {
-            // return "Chat with order";
-            // chat for on order. We can use orderid to fetch the chat
-            $chats = Chat::with('chatUser')->where('order_id', $orderId)->get();
-            if ($chats->count() == 0){
-                return null;
-            }
+        $user1Chats = Chat::join('chat_users', 'chats.chat_id', 'chat_users.chat_id')->where('chat_users.user_id', $user1->id)->pluck('chats.chat_id')->toArray();
+        // check user2 chat ids
+        $chatUsers = ChatUser::whereIn('chat_id', $user1Chats)->where('user_id', $user2->id)->first();
+        if($chatUsers){
+            $chat = Chat::where('chat_id', $chatUsers->chat_id)->first();
+            return $chat;
+        }
+        else{
+            return NULL;
+        }
 
-            foreach ($chats as $chat)
-            {
-                $chatUser1 = $chat->chatUser[0];
-                $chatUser2 = $chat->chatUser[1];
-                $already_created_chat_users = [$chatUser1->user_id, $chatUser2->user_id];
-                sort($already_created_chat_users);
-                $requested_chat_users = [$user1->id, $user2->id];
-                sort($requested_chat_users);
-                if ($already_created_chat_users == $requested_chat_users) {
-                    return $chat;
-                }
-            }
-            return null;
-        }
-        if ($user1->isAdmin() || $user2->isAdmin()) {
-            // chat between admin and another user without order
-            $chatusers = ChatUser::where('user_id', $user1->id)->get();
-            $chatids = array();
-            foreach ($chatusers as $c) {
-                $chatids[] = $c->chat_id;
-            }
-            $otherUserChats = ChatUser::whereIn('chat_id', $chatids)->where('user_id', $user2->id)->first();
-            if ($otherUserChats == null) {
-                return null;
-            } else {
-                $chat = Chat::where('chat_id', $otherUserChats->chat_id)->first();
-                return $chat;
-            }
-        }
     }
 
 

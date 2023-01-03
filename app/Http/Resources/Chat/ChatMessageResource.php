@@ -24,10 +24,10 @@ class ChatMessageResource extends JsonResource
 
         $debug = env('APP_DEBUG');
 
-        $base = \Config::get('constants.profile_images');
-        if($debug === true){
-            $base = \Config::get('constants.profile_images_clone');
-        }
+        $base = \Config::get('constants.base_url');
+        // if($debug === true){
+        //     $base = \Config::get('constants.profile_images_clone');
+        // }
         if($this->image_url){
             $url = $base . $this->image_url;
         }
