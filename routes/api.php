@@ -10,7 +10,8 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Trainr\TrainrWorkoutProgramController;
 use App\Http\Controllers\Workout\HomeWorkoutController;
 use App\Http\Controllers\Chat\ChatController;
-// use App\Http\Controllers\SocialLoginController;
+use App\Http\Controllers\Payment\PaymentController;
+use App\Http\Controllers\Payment\InvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +62,10 @@ Route::get("get_clients",[UserController::class,'GetClientsListForTrainr']);
 Route::post('create_workout_program', [TrainrWorkoutProgramController::class, 'AddWorkout']);
 
 
+
+//Payment Related
+Route::post('create_subscription_package', [PaymentController::class, 'createSubscriptioPackage']);
+Route::post('create_invoice', [InvoiceController::class, 'createInvoice']);
 
 
 

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Profile;
 use App\Models\Role;
+use App\Models\Payment\SubscriptionPackage;
 
 class UserController extends Controller
 {
@@ -92,4 +93,32 @@ class UserController extends Controller
 			
 
     }
+
+
+
+    
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
