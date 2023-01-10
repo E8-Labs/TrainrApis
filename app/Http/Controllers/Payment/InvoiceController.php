@@ -25,6 +25,7 @@ class InvoiceController extends Controller
     	if($user){
     		DB::beginTransaction();
     		$invoice = new Invoice;
+            $incoice->title = $request->title;
     		$invoice->from_id = $user->id;
     		$invoice->to_id = $request->to_id;
     		$invoice->invoice_description = $request->invoice_description;
