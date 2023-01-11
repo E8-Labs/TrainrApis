@@ -36,7 +36,7 @@ class InvoiceController extends Controller
     			$message = new ChatMessage;
     			$message->user_id = $user->id;
     			$message->chat_id = $request->chat_id;
-    			$message->inoice_id = $invoice->id;
+    			$message->invoice_id = $invoice->id;
     			$messageSaved = $message->save();
     			if($messageSaved){
     				DB::commit();
