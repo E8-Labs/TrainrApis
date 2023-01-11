@@ -4,6 +4,7 @@ namespace App\Http\Resources\Payment;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\UserProfileLiteResource;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceResource extends JsonResource
 {
