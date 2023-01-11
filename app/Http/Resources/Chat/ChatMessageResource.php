@@ -8,6 +8,8 @@ use App\Models\Role;
 use App\Models\Profile;
 use App\Http\Resources\Chat\ChatProfileResource;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\Payment\InvoiceResource;
+use App\Models\Payment\Invoice;
 
 class ChatMessageResource extends JsonResource
 {
@@ -28,9 +30,12 @@ class ChatMessageResource extends JsonResource
         // if($debug === true){
         //     $base = \Config::get('constants.profile_images_clone');
         // }
+
         if($this->image_url){
             $url = $base . $this->image_url;
         }
+
+        $invoice = Invoice::where('id', $this->invoice_id)->first();
 
         return [
             "id" => $this->id,
@@ -41,6 +46,7 @@ class ChatMessageResource extends JsonResource
             'image_height' => $this->image_height,
             "user" => new ChatProfileResource($profile),
             "created_at" => $this->created_at,
+            'invoice' => new InvoiceResource($invoice)
             // 'ids' => $profiles,
         ];
     }
