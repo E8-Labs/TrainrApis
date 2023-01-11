@@ -32,7 +32,7 @@ class InvoiceResource extends JsonResource
             "id" => (int)$this->id,
             "title" => $this->title,
             "invoice_description" => $this->invoice_description,
-
+            'invoice_status' => (int)$this->invoice_status,
             "price" => $this->price,
             "fromUser" => new UserProfileLiteResource($profileFrom),
             "toUser" => new UserProfileLiteResource($profileTo),
