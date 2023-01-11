@@ -16,6 +16,7 @@ use App\Models\Role;
 use App\Models\Payment\SubscriptionPackage;
 use App\Models\Chat\ChatMessage;
 use App\Models\Payment\Invoice;
+use App\Http\Resources\Payment\InvoiceResource;
 
 
 class InvoiceController extends Controller
@@ -43,7 +44,7 @@ class InvoiceController extends Controller
     			else{
     				DB::rollBack();
     			}
-    			return response()->json(['status' => true, 'message' => 'Invoice created', 'data' => $invoice]);
+    			return response()->json(['status' => true, 'message' => 'Invoice created', 'data' => new InvoiceResource($invoice)]);
     		}
     		else{
     			DB::rollBack();
