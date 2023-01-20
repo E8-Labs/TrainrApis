@@ -12,6 +12,7 @@ use App\Http\Controllers\Workout\HomeWorkoutController;
 use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\Payment\InvoiceController;
+use App\Http\Controllers\Community\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,18 @@ Route::post('create_subscription_package', [PaymentController::class, 'createSub
 Route::post('create_invoice', [InvoiceController::class, 'createInvoice']);
 
 
+//Community Posts
+Route::get('posts', [PostController::class, 'loadCommunityPosts']);
+Route::get('post_comments', [PostController::class, 'loadPostComments']);
+Route::get('post_likes', [PostController::class, 'loadPostLikes']);
+Route::post("add_post",[PostController::class,'createPost']);
+
+Route::post("add_post_comment",[PostController::class,'addComment']);
+Route::post("add_post_like",[PostController::class,'addLike']);
+
+
+
+
 
 //Chat
 Route::post("create_chat",[ChatController::class,'createChat']);
@@ -81,3 +94,20 @@ Route::post('send_message', [ChatController::class, 'sendMessage']);//New
     Route::post('upload_chat_image', [ChatController::class, 'uploadChatImage']);
     Route::post('user_unread_count', [ChatController::class, 'getUnreadMessagesCount']);
     Route::post('get_chat_by_id', [ChatController::class, 'showChat']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

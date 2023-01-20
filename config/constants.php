@@ -23,6 +23,7 @@
     'exercise_types_save' => 'Images/exercise_types/',
     'exercise_images_save' => 'Images/exercise_images/',
     'profile_images_save' => 'Images/profile_images/',
+    'post_images_save' => 'Images/post_images/',
 
 
     
