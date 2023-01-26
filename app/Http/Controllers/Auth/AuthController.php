@@ -370,6 +370,34 @@ class AuthController extends Controller
 		}
     }
 
+    public function CheckUsernameAvailablity(Request $req)
+    {
+                $validator = Validator::make($req->all(), [
+                'username' => 'required',
+                    ]);
+            if($validator->fails()){
+                    return response()->json(['status' => false,
+                    'message'=> 'validation error',
+                    'data' => null,
+                    'validation_errors'=> $validator->errors()]);
+                }
+        {
+            $isEmailAvailable = $this->isUsernameAvailable($req['username']);
+            if($isEmailAvailable)
+            {
+                return response()->json([
+                'status' => true,
+                'message'=> 'Username Available']);
+            }
+            else
+            {
+                return response()->json([
+                'status' => false,
+                'message'=> 'Username not Available']);
+            }
+        }
+    }
+
     function sendVerificationMail(Request $request){
 		$validator = Validator::make($request->all(), [
 			'email' => 'required|string|email',
@@ -470,4 +498,17 @@ class AuthController extends Controller
 				}
 				
 	}
+    private function isUsernameAvailable($username)
+    {
+                $user=Profile::where("username",$username)->first();
+                if($user==null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
+    }
 }

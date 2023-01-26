@@ -13,6 +13,7 @@ use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\Payment\InvoiceController;
 use App\Http\Controllers\Community\PostController;
+use App\Http\Controllers\Meal\MealController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,7 @@ Route::post("login",[AuthController::class,'login']);
 Route::get("get_coaches",[UserController::class,'GetTrainrsListForClient']);
 Route::post('send_code', [AuthController::class, 'sendVerificationMail']);
 Route::post('verify_email', [AuthController::class, 'confirmVerificationCode']);
+Route::get('is_username_available', [AuthController::class, 'CheckUsernameAvailablity']);
 
 
 
@@ -63,6 +65,8 @@ Route::get("get_clients",[UserController::class,'GetClientsListForTrainr']);
 Route::post('create_workout_program', [TrainrWorkoutProgramController::class, 'AddWorkout']);
 
 
+//Meal
+Route::post('add_meal', [MealController::class, 'addMeal']);
 
 //Payment Related
 Route::post('create_subscription_package', [PaymentController::class, 'createSubscriptioPackage']);

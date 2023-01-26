@@ -41,10 +41,10 @@ class PostResource extends JsonResource
         return [
             "id" => $this->id,
             // "name" => $this->name,
-            "post_descrition" => $this->post_description,
+            "post_description" => $this->post_description,
             'profile' => new UserProfileLiteResource($profile),
             'post_media' => \Config::get('constants.base_url').$this->post_image,
-            "privacy" => $this->post_privacy,
+            "privacy" => (int)$this->post_privacy,
             "image_height" => $this->image_height,
             "image_width" => $this->image_width,
             'total_comments' => $commentsCount,

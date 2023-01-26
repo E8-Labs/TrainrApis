@@ -22,6 +22,7 @@
     // 'exercise_type_images' => 'http://theprevueapp.com/trainr/storage/app/',
     'exercise_types_save' => 'Images/exercise_types/',
     'exercise_images_save' => 'Images/exercise_images/',
+    'meal_images_save' => 'Images/meal_images/',
     'profile_images_save' => 'Images/profile_images/',
     'post_images_save' => 'Images/post_images/',
 
