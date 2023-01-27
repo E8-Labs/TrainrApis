@@ -150,7 +150,7 @@ class MealController extends Controller
     		$off_set = $request->off_set;
     	}
     	if($user){
-    		$meals = Meal::where('user_id', $user->id)->orderBy('created_at', 'DESC')->skip($off_set)->take(20);
+    		$meals = Meal::where('user_id', $user->id)->orderBy('created_at', 'DESC')->skip($off_set)->take(20)->get();
     		return response()->json(['data'=> MealFullResource::collection($meals), 'message' => 'Meals List For Trainr', 'status' => true]);
     	}
     	else{
