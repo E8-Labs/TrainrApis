@@ -41,6 +41,7 @@ class MealController extends Controller
 {
     //
 
+
     function addMeal(Request $request){
     	$user = Auth::user();
 		if($user){
@@ -139,5 +140,21 @@ class MealController extends Controller
 		else{
 			return response()->json(['data'=> null, 'message' => 'Unauthorized access', 'status' => false]);
 		}
+    }
+
+
+    function getTrainrMeals(Request $request){
+    	$user = Auth::user();
+    	$off_set = 0;
+    	if($request->has('off_set')){
+    		$off_set = $request->off_set;
+    	}
+    	if($user){
+    		$meals = Meal::where('user_id', $user->id)->orderBy('createdAt', 'DESC')->skip($off_set)->take(20);
+    		return response()->json(['data'=> MealFullResource::collection($meals), 'message' => 'Meals List For Trainr', 'status' => true]);
+    	}
+    	else{
+    		return response()->json(['data'=> null, 'message' => 'Unauthorized access', 'status' => false]);
+    	}
     }
 }

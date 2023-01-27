@@ -31,7 +31,7 @@ class MealFullResource extends JsonResource
             'user' => new UserProfileLiteResource($user),
             'ingredients' => $ingredients,
             "meal_goals" => $goals,
-            "meal_image" => \Config::get('constants.meal_images_save').$this->meal_image,
+            "meal_image" => \Config::get('constants.base_url').$this->meal_image,
             "fats" => (int)$this->fats,
             "proteins" => (int)$this->proteins,
             'carbs' => (int)$this->carbs,
