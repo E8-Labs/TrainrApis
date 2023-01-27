@@ -20,7 +20,7 @@ class MealFullResource extends JsonResource
     public function toArray($request)
     {
         $user = Profile::where('user_id', $this->user_id)->first();
-        $ingredients = MealIngredients::where('meal_id', $this->id)->get();
+        $ingredients = MealIngredients::where('meal_id', $this->id)->pluck('meal_ingredient')->toArray();
         $addedGoals = MealAddedGoals::where('meal_id', $this->id)->pluck('meal_goal')->toArray();
         $goals = MealDefinedGoals::whereIn('id', $addedGoals)->get();
         
