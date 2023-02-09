@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\Profile;
 use App\Models\Role;
 use App\Models\Payment\SubscriptionPackage;
+use App\Http\Resources\Payment\SubscriptionPackageResource;
 
 class PaymentController extends Controller
 {
@@ -22,6 +23,7 @@ class PaymentController extends Controller
 			'package_name' => 'required|string',
 			'package_description' => 'required|string',
 			'price' => 'required',
+            'occurrence' => 'required',
 				]);
 
 			if($validator->fails()){
@@ -38,9 +40,10 @@ class PaymentController extends Controller
     		$package->package_description = $request->package_description;
     		$package->price = $request->price;
     		$package->user_id = $user->id;
+            $package->occurrence = $request->occurrence;
     		$saved = $package->save();
     		if($saved){
-				return response()->json(['status' => true, 'message' => 'Package created', 'data' => $package]);
+				return response()->json(['status' => true, 'message' => 'Package created', 'data' => new SubscriptionPackageResource($package)]);
     		}
     		else{
     			return response()->json(['status' => false, 'message' => 'Error creating subscription package', 'data' => NULL]);
@@ -49,5 +52,21 @@ class PaymentController extends Controller
     	else{
     		return response()->json(['status' => false, 'message' => 'Unauthorized access', 'data' => NULL]);
     	}
+    }
+
+    function getSubscriptionPackagesForTrainr(Request $request){
+        $user = Auth::user();
+        if($user){
+            $off_set = 0;
+            if($request->has('off_set')){
+                $off_set = $request->off_set;
+            }
+            $packages = SubscriptionPackage::where("user_id", $user->id)->skip($off_set)->take(5)->get();
+            return response()->json(['status'=> true, 'message'=> "Packages list", 'data'=> SubscriptionPackageResource::collection($packages)]);
+
+        }
+        else{
+            return response()->json(['status' => false, 'message' => 'Unauthorized access', 'data' => NULL]);
+        }
     }
 }

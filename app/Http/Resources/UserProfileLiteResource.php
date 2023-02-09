@@ -28,7 +28,7 @@ class UserProfileLiteResource extends JsonResource
         // ->where('user_expertises.user_id', $user->id)->select(['user_expertises.id', 'name', 'icon_image'])->get();
         // $expertise = UserExpertise::where('user_id', $user->id)->get();
         return [
-            "id" => $this->user_id,
+            "id" => (int)$this->user_id,
             // "email" => $user->email,
             "name" => $this->full_name,
             "username" => $this->username,
@@ -39,7 +39,7 @@ class UserProfileLiteResource extends JsonResource
             "state" => $this->state,
             // 'lat' => $this->lat,
             // 'lang' => $this->lang,
-            //  'role' => $user->role,
+             'role' => (int)$this->role,
              'bio' => $this->bio,
 
         ];

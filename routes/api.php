@@ -68,7 +68,10 @@ Route::post('create_workout_program', [TrainrWorkoutProgramController::class, 'A
 //Meal
 Route::post('add_meal', [MealController::class, 'addMeal']);
 Route::get("trainr_meals",[MealController::class,'getTrainrMeals']);
+
+
 //Payment Related
+Route::get("subscription_packages",[PaymentController::class,'getSubscriptionPackagesForTrainr']);
 Route::post('create_subscription_package', [PaymentController::class, 'createSubscriptioPackage']);
 Route::post('create_invoice', [InvoiceController::class, 'createInvoice']);
 

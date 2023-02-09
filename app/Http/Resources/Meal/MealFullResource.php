@@ -27,7 +27,7 @@ class MealFullResource extends JsonResource
         return [
             "id" => $this->id,
             "meal_name" => $this->meal_title,
-            "meal_descrition" => $this->meal_description,
+            "meal_description" => $this->meal_description,
             'user' => new UserProfileLiteResource($user),
             'ingredients' => $ingredients,
             "meal_goals" => $goals,

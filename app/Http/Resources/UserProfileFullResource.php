@@ -43,8 +43,8 @@ class UserProfileFullResource extends JsonResource
         // $goals = Goal::where('user_id', $user->id)->get();
         // $expertise = UserExpertise::where('user_id', $user->id)->get();
         return [
-            "id" => $this->user_id,
-            "user_id" => $this->user_id,
+            "id" => (int)$this->user_id,
+            "user_id" => (int)$this->user_id,
             "comment" => "User_id and id will be same because id => this->user_id",
             "email" => $user->email,
             "name" => $this->full_name,
@@ -58,7 +58,7 @@ class UserProfileFullResource extends JsonResource
             'trainr' => new UserProfileLiteResource($trainr),
             'lat' => $this->lat,
             'lang' => $this->lang,
-             'role' => $this->role,
+             'role' => (int)$this->role,
              'bio' => $this->bio,
              'weight' => (int)$this->weight,
              'workout_frequency' => (int)$this->workout_frequency,
