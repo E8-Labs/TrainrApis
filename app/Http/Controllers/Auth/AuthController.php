@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\UserTrainrs;
 use App\Models\Profile;
+use App\Models\User\InstagramProfileModel;
 use App\Models\Role;
 use App\Models\Exercise\Goal;
 use App\Models\Exercise\HealthCondition;
@@ -162,6 +163,21 @@ class AuthController extends Controller
     }
 
 
+    private function updateInstagramProfile(Request $request, $user){
+        $model = InstagramProfileModel::where('user_id', $user->id)->first();
+        if($model === NULL){
+            $model = new InstagramProfileModel;
+        }
+        
+        $model->instagram_user_id = $reqeust->instagram_user_id;
+        $model->instagram_user_name = $reqeust->instagram_user_name;
+        $model->instagram_access_token = $request->instagram_access_token;
+        $model->user_id = $user->id;
+        $saved = $model->save();
+        return $saved;
+    }
+
+
 
     public function updateProfile(Request $request){
     	$user = Auth::user();
@@ -197,6 +213,26 @@ class AuthController extends Controller
     		$profile->sleep_hours = $request->sleep_hours;
     	}
     	$profile->save();
+
+        if($request->has('instagram_access_token')){
+            $instaSaved = $this->updateInstagramProfile($request, $user);
+        }
+
+        if($request->has('lat')){
+            $profile->lat = $request->lat;
+        }
+        if($request->has('lang')){
+            $profile->lang = $request->lang;
+        }
+        if($request->has('city')){
+            $profile->city = $request->city;
+        }
+        if($request->has('state')){
+            $profile->state = $request->state;
+        }
+        if($request->has('fcm_token')){
+            $profile->fcm_token = $request->fcm_token;
+        }
 
     	if($request->has('goals')){
     		$goals = $request->goals;
