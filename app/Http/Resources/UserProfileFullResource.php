@@ -13,6 +13,7 @@ use App\Models\Exercise\Goal;
 use App\Models\Exercise\HealthCondition;
 use App\Models\Exercise\ClientHealthConditionsModel;
 use App\Models\Exercise\WorkoutFrequency;
+use App\Models\User\InstagramProfileModel;
 
 // use App\Http\Resources\UserProfileFullResource;
 use App\Http\Resources\UserProfileLiteResource;
@@ -40,6 +41,8 @@ class UserProfileFullResource extends JsonResource
 
         $expertise = AllExpertise::join('user_expertises', 'user_expertises.expertise_id', '=', 'all_expertises.id')
         ->where('user_expertises.user_id', $user->id)->select(['user_expertises.id', 'name', 'icon_image'])->get();
+
+        $insta = InstagramProfileModel::where('user_id', $user->id)->first();
         // $goals = Goal::where('user_id', $user->id)->get();
         // $expertise = UserExpertise::where('user_id', $user->id)->get();
         return [
@@ -66,7 +69,8 @@ class UserProfileFullResource extends JsonResource
              "height" => [
                 "height_inches" => (int)$this->height_inches,
                 "height_feet" => (int)$this->height_feet,
-             ]
+             ],
+             "instagram_profile" => $insta
 
         ];
     }
