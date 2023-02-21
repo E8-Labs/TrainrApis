@@ -13,6 +13,8 @@ use App\Models\User;
 use App\Models\Profile;
 use App\Models\Exercise;
 use App\Models\ExerciseSet;
+
+use App\Models\Meal\Meal;
 // use App\Models\Exercise\WorkoutTime;
 use App\Models\Exercise\CompletedWorkouts;
 use App\Models\Exercise\CompletedWorkoutExercise;
@@ -127,6 +129,8 @@ class HomeWorkoutController extends Controller
         $total_workouts = 0;
 
         if($user){
+            $total_workouts = Exercise::where('user_id', $user->id)->count();
+            $total_meals = Meal::where('user_id', $user->id)->count();
             $top_clients = Profile::join('user_trainrs', 'profiles.user_id', 'user_trainrs.client_id')->where('user_trainrs.trainr_id', $user->id)->get();
             $new_clients = Profile::join('user_trainrs', 'profiles.user_id', 'user_trainrs.client_id')->where('user_trainrs.trainr_id', $user->id)
             ->orderBy('profiles.created_at', 'DESC')->take(5)
