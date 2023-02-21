@@ -75,8 +75,8 @@ class UserController extends Controller
 			if($request->has('off_set')){
 				$off_set = $request->off_set;
 			}
-
-			$profiles = Profile::where('role', '=', Role::RoleClient)
+			$profiles = Profile::join('user_trainrs', 'profiles.user_id', 'user_trainrs.client_id')->where('user_trainrs.trainr_id', $user->id)
+			// $profiles = Profile::where('role', '=', Role::RoleClient)
 			->when($request->has('search'), function ($query) use($request) {
                // echo 'has difficulty '. $request->difficulty;
 				$search = $request->search;
@@ -84,6 +84,7 @@ class UserController extends Controller
                	$query->where('full_name', 'LIKE', "%$search%")->orWhere('username', 'LIKE', "%$search%");
                
             })
+            
 			->skip($off_set)->take(20)->get();
 			return response()->json([
         	    'status' => true,
